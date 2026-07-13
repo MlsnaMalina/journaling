@@ -5,6 +5,7 @@ import { loadData, rollover, saveData } from './store';
 import { Page } from './components/Page';
 import { DeskDoodles } from './components/Desk';
 import { ScribblePad } from './components/ScribblePad';
+import { ScratchCard } from './components/ScratchCard';
 import type { TaskActions } from './components/TaskRow';
 
 function newId(): string {
@@ -103,6 +104,7 @@ export default function App() {
       <div className="desk-inner">
         <ScribblePad today={today} />
         <DeskDoodles today={today} />
+        <ScratchCard today={today} />
         <div className="book">
         <Page
           bucket="today"
