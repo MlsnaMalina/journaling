@@ -4,6 +4,7 @@ import { todayKey } from './dates';
 import { loadData, rollover, saveData } from './store';
 import { Page } from './components/Page';
 import { DeskDoodles } from './components/Desk';
+import { ScribblePad } from './components/ScribblePad';
 import type { TaskActions } from './components/TaskRow';
 
 function newId(): string {
@@ -100,6 +101,7 @@ export default function App() {
         </button>
       </nav>
       <div className="desk-inner">
+        <ScribblePad today={today} />
         <DeskDoodles today={today} />
         <div className="book">
         <Page
