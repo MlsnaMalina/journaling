@@ -1,0 +1,516 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  font-family: 'Patrick Hand', cursive;
+  color: #2a2a2a;
+}
+
+.desk {
+  padding: 20px 12px 48px;
+}
+
+.desk-inner {
+  position: relative;
+  max-width: 1076px;
+  margin: 0 auto;
+  padding: 40px 88px 44px;
+}
+
+.margin-doodle {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ------ sešit ------ */
+
+.book {
+  display: flex;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fdfdfb;
+  border: 1px solid #d9d4c9;
+  border-radius: 10px;
+  box-shadow: 0 2px 14px rgba(90, 80, 60, 0.08);
+}
+
+.page {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  padding: 26px 26px 60px;
+  background-image: radial-gradient(#e9e4d7 1px, transparent 1.2px);
+  background-size: 16px 16px;
+  min-height: 560px;
+}
+
+.page.today {
+  border-right: 1px solid #e6e1d5;
+  border-radius: 10px 0 0 10px;
+}
+
+.page.someday {
+  border-left: 1px solid #efeadd;
+  border-radius: 0 10px 10px 0;
+}
+
+/* ------ hlavička stránky ------ */
+
+.tape {
+  display: inline-block;
+  background: #1c1c1c;
+  color: #fdfdfb;
+  font-size: 15px;
+  letter-spacing: 4px;
+  padding: 3px 15px 4px;
+  border-radius: 3px;
+  transform: rotate(-1deg);
+}
+
+.tape.tilt {
+  transform: rotate(1deg);
+}
+
+.date {
+  font-family: 'Caveat', cursive;
+  font-size: 30px;
+  font-weight: 600;
+  color: #222222;
+  margin: 8px 0 10px;
+}
+
+.date-spacer {
+  height: 52px;
+}
+
+.pies {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.pie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.pie-label {
+  font-family: 'Caveat', cursive;
+  font-size: 13px;
+  color: #8a8478;
+  line-height: 1;
+}
+
+/* ------ kategorie ------ */
+
+.cat-section {
+  margin-bottom: 14px;
+}
+
+.cat {
+  position: relative;
+  z-index: 0;
+  font-family: 'Dancing Script', cursive;
+  font-size: 26px;
+  font-weight: 600;
+  color: #2a2a2a;
+  display: inline-block;
+  padding: 0 8px;
+  margin: 6px 0 4px;
+}
+
+.cat b {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 4px;
+  height: 9px;
+  z-index: -1;
+  transform: rotate(-1deg);
+  border-radius: 2px;
+}
+
+.cat.work b {
+  background: #fbe3a3;
+}
+
+.cat.personal b {
+  background: #f3cdd6;
+}
+
+/* ------ úkoly ------ */
+
+.task-group {
+  margin: 0;
+}
+
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 4px 2px;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.box {
+  width: 17px;
+  height: 17px;
+  border: 1.6px solid #3a3a3a;
+  border-radius: 3px;
+  background: none;
+  margin-top: 3px;
+  padding: 0;
+  flex: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-group:nth-child(odd) .box {
+  transform: rotate(1.2deg);
+}
+
+.task-group:nth-child(even) .box {
+  transform: rotate(-1deg);
+}
+
+.txt {
+  position: relative;
+  min-width: 0;
+}
+
+.txt .strike {
+  position: absolute;
+  left: -2px;
+  top: 55%;
+  height: 1.6px;
+  background: #8a8a8a;
+  width: 0;
+  transform: rotate(-0.5deg);
+  transition: width 0.35s ease;
+  pointer-events: none;
+}
+
+.txt.done {
+  color: #9a9a96;
+}
+
+.txt.done .strike {
+  width: 102%;
+}
+
+.txt.done .hl {
+  background: #eeeae0;
+}
+
+.hl {
+  background: #fbe3a3;
+  padding: 0 5px;
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.personal .hl {
+  background: #f3cdd6;
+}
+
+.mig {
+  color: #c96f4a;
+  font-size: 15px;
+  letter-spacing: -2px;
+  margin-right: 4px;
+}
+
+.frac {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: #8a8478;
+  margin-top: 3px;
+  flex: none;
+}
+
+.fold {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  margin-top: 2px;
+  color: #b3ad9f;
+  font-size: 13px;
+  cursor: pointer;
+  flex: none;
+  transition: transform 0.15s;
+}
+
+.fold.folded {
+  transform: rotate(-90deg);
+}
+
+.row-tools {
+  display: none;
+  gap: 2px;
+  flex: none;
+  margin-top: 1px;
+}
+
+.task-row:hover .row-tools,
+.task-row:focus-within .row-tools {
+  display: inline-flex;
+}
+
+.tool {
+  background: none;
+  border: none;
+  padding: 1px 4px;
+  color: #b3ad9f;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.tool:hover {
+  background: #f3efe4;
+  color: #6e6a5e;
+}
+
+.move {
+  margin-left: auto;
+  flex: none;
+  border: 1.3px dashed #b8b2a6;
+  border-radius: 12px;
+  background: none;
+  color: #8a8478;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 13px;
+  padding: 1px 9px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.task-row:hover .move,
+.task-row:focus-within .move {
+  opacity: 1;
+}
+
+.move:hover {
+  border-color: #8a8478;
+  color: #5f5a4e;
+}
+
+/* ------ podúkoly ------ */
+
+.subs {
+  margin-left: 16px;
+  border-left: 1.5px dashed #cfc9bd;
+  padding-left: 9px;
+}
+
+.subs .task-row {
+  font-size: 15px;
+  padding: 2px 2px;
+}
+
+.subs .box {
+  width: 14px;
+  height: 14px;
+  border-width: 1.4px;
+  border-radius: 2px;
+  margin-top: 2px;
+}
+
+/* ------ přidávání ------ */
+
+.add-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  border-bottom: 1.5px dashed #cfc9bd;
+  padding-bottom: 3px;
+}
+
+.add-plus {
+  color: #a8a294;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.add-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 16px;
+  color: #2a2a2a;
+  padding: 2px 0;
+}
+
+.add-input::placeholder {
+  color: #b3ad9f;
+}
+
+.sub-input {
+  font-size: 14px;
+  border-bottom: 1.5px dashed #cfc9bd;
+  margin: 2px 0 4px;
+  width: 80%;
+}
+
+.add-star {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  flex: none;
+  opacity: 0.55;
+}
+
+.add-star.on,
+.add-star:hover {
+  opacity: 1;
+}
+
+/* ------ migrační pobídka ------ */
+
+.nudge {
+  margin: 0 0 4px 28px;
+  font-family: 'Caveat', cursive;
+  font-size: 16px;
+  color: #a4643f;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.nudge button {
+  border: 1.3px dashed #d8a17e;
+  border-radius: 12px;
+  background: #fdf6ef;
+  color: #a4643f;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 12.5px;
+  padding: 0 9px;
+  cursor: pointer;
+}
+
+.nudge button:hover {
+  background: #f8e9dc;
+}
+
+/* ------ razítko ------ */
+
+.stamp {
+  position: absolute;
+  bottom: 22px;
+  right: 28px;
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
+  font-weight: 600;
+  color: #c96f4a;
+  border: 2.2px solid #c96f4a;
+  border-radius: 10px;
+  padding: 2px 16px 5px;
+  transform: rotate(-11deg);
+  outline: 1.4px solid #c96f4a;
+  outline-offset: 3px;
+  opacity: 0.85;
+  animation: stamp-pop 0.35s cubic-bezier(0.2, 1.6, 0.5, 1);
+  pointer-events: none;
+}
+
+@keyframes stamp-pop {
+  0% {
+    transform: rotate(-11deg) scale(2.1);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(-11deg) scale(1);
+    opacity: 0.85;
+  }
+}
+
+/* ------ mobil ------ */
+
+.tabs {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tabs button {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 15px;
+  letter-spacing: 2px;
+  border: 1px solid #d9d4c9;
+  border-radius: 3px;
+  background: #fdfdfb;
+  color: #8a8478;
+  padding: 4px 16px;
+  cursor: pointer;
+}
+
+.tabs button.on {
+  background: #1c1c1c;
+  border-color: #1c1c1c;
+  color: #fdfdfb;
+}
+
+@media (max-width: 980px) {
+  .margin-doodle {
+    display: none;
+  }
+
+  .desk {
+    padding: 20px 12px 32px;
+  }
+
+  .desk-inner {
+    padding: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .tabs {
+    display: flex;
+  }
+
+  .book {
+    display: block;
+  }
+
+  .page,
+  .page.today,
+  .page.someday {
+    border: none;
+    border-radius: 10px;
+    min-height: 70vh;
+  }
+
+  .page.m-hidden {
+    display: none;
+  }
+
+  .move {
+    opacity: 1;
+  }
+
+  .row-tools {
+    display: inline-flex;
+  }
+}
