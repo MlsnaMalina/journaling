@@ -41,14 +41,14 @@ export function DeskDoodles({ today }: { today: string }) {
     const customIndex = i - (SLOTS.length - Math.min(custom.length, 2));
     if (customIndex >= 0 && custom[customIndex]) {
       return (
-        <div key={`custom-${customIndex}`} className="margin-doodle" style={style}>
+        <div key={`custom-${customIndex}`} className="margin-doodle side" style={style}>
           <img src={`/doodles/${custom[customIndex]}`} alt="" width={76} />
         </div>
       );
     }
     const d = picked[i];
     return (
-      <div key={d.key} className="margin-doodle" style={style}>
+      <div key={d.key} className="margin-doodle side" style={style}>
         {d.node}
       </div>
     );
@@ -56,16 +56,14 @@ export function DeskDoodles({ today }: { today: string }) {
 
   return (
     <>
-      <div className="margin-doodle" style={{ top: 28, left: '18%' }}>
+      <div className="margin-doodle doodle-tape-a">
         <WashiTape pal={tapeA} pattern="dots" rotate={-3} />
       </div>
-      <div className="margin-doodle" style={{ top: 26, right: '20%' }}>
+      <div className="margin-doodle doodle-tape-b">
         <WashiTape pal={tapeB} pattern="dashes" rotate={2} />
       </div>
       {slotNodes}
-      <div className="margin-doodle" style={{ bottom: 2, left: '12%' }}>
-        {tool.node}
-      </div>
+      <div className="margin-doodle doodle-tool">{tool.node}</div>
     </>
   );
 }

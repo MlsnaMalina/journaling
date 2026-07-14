@@ -3,8 +3,8 @@ import type { PointerEvent as ReactPointerEvent } from 'react';
 import { scratchForDay } from '../scratch';
 
 const KEY = 'bujo-scratch-v1';
-const W = 150;
-const H = 84;
+const W = 236;
+const H = 112;
 
 function loadRevealed(day: string): boolean {
   try {
@@ -42,15 +42,15 @@ export function ScratchCard({ today }: { today: string }) {
     ctx.fillStyle = '#c9c4b8';
     ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = '#b3ada0';
-    for (let i = 0; i < 70; i++) {
-      ctx.fillRect(Math.random() * W, Math.random() * H, 1.4, 1);
+    for (let i = 0; i < 170; i++) {
+      ctx.fillRect(Math.random() * W, Math.random() * H, 1.8, 1);
     }
-    ctx.font = "600 13px Caveat, cursive";
+    ctx.font = "600 20px Caveat, cursive";
     ctx.fillStyle = '#7d7768';
     ctx.textAlign = 'center';
-    ctx.fillText('setři mě', W / 2, H / 2 + 5);
-    ctx.font = "8px 'Patrick Hand', cursive";
-    ctx.fillText('dnešní los', W / 2, 13);
+    ctx.fillText('setři mě', W / 2, H / 2 + 7);
+    ctx.font = "12px 'Patrick Hand', cursive";
+    ctx.fillText('dnešní los', W / 2, 19);
   }, [revealed, today]);
 
   const scratch = (e: ReactPointerEvent<HTMLCanvasElement>) => {
