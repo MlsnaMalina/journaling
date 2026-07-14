@@ -104,7 +104,6 @@ export default function App() {
       <div className="desk-inner">
         <ScribblePad today={today} />
         <DeskDoodles today={today} />
-        <ScratchCard today={today} />
         <div className="book">
         <Page
           bucket="today"
@@ -122,6 +121,7 @@ export default function App() {
           addTask={addTask}
           hiddenOnMobile={mobilePage !== 'someday'}
         />
+        <ScratchCard today={today} />
         </div>
       </div>
     </div>

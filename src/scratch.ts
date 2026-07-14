@@ -8,32 +8,40 @@ export interface ScratchItem {
 
 /** Zkomolené filmové hlášky ohnuté do světa deníku. */
 const HLASKY: ScratchItem[] = [
-  { text: 'Můžeme s pondělkem nesouhlasit, můžeme o něm vést spory, ale to je tak všechno, co se s ním dá dělat.', source: 'Jára Cimrman' },
-  { text: 'Kde udělali soudruzi z NDR chybu? Neměli podúkoly.', source: 'Pelíšky' },
-  { text: 'Já se vrátím. — tvůj nesplněný úkol, zítra ráno', source: 'Terminátor' },
-  { text: 'Život je jako bonboniéra. Úkoly na „někdy jindy" jsou ty s marcipánem — nikdo neví, kdy na ně dojde.', source: 'Forrest Gump' },
-  { text: 'Dneska nic neodkládej, nebo se to odstěhuje do Humpolce jako hliník.', source: 'Marečku, podejte mi pero!' },
+  // Harry Potter
+  { text: 'Bát se svého seznamu úkolů jenom zvětšuje strach ze samotné věci.', source: 'Harry Potter' },
+  { text: 'Expecto Odškrtnum!', source: 'Harry Potter' },
+  { text: 'Nejsou to naše schopnosti, ale volby, co ukazuje, čím doopravdy jsme — třeba i to, co dáváme na „někdy jindy".', source: 'Harry Potter' },
+  { text: 'Napřed žertík, pak podúkoly.', source: 'Harry Potter' },
+  { text: 'Neboj se svého seznamu. Říkej mu prostě „ten dnešní".', source: 'Harry Potter' },
+  // Star Wars
   { text: 'Ať tě provází síla. A kofein.', source: 'Star Wars' },
-  { text: 'Dám ti nabídku, která se neodmítá: pět minut pauzu.', source: 'Kmotr' },
-  { text: 'Proletářky všech zemí, odškrtněte se!', source: 'Pelíšky' },
-  { text: 'Vezmeš si modrou pilulku a uvěříš, že se úkoly splní samy. Vezmeš si červenou — a otevřeš deník.', source: 'Matrix' },
-  { text: 'Úkol nikdy nechodí pozdě. Přichází přesně tehdy, kdy se převalí na dnešek.', source: 'Pán prstenů' },
-  { text: 'Myslím, že tohle je začátek krásného seznamu.', source: 'Casablanca' },
+  { text: 'Udělej, nebo neudělej. Není žádné „zkusím to zítra".', source: 'Star Wars' },
+  { text: 'Tohle nejsou úkoly, které hledáš.', source: 'Star Wars' },
+  { text: 'Velikost seznamu neurčuje nic. Podle velikosti soudíš mě?', source: 'Star Wars' },
+  { text: 'Já jsem tvůj úkol. A vracím se každou noc, dokud mě neodškrtneš.', source: 'Star Wars' },
+  // Hříšný tanec
+  { text: 'Nikdo nedává tenhle úkol do kouta.', source: 'Hříšný tanec' },
+  { text: 'Měla jsem ten nejúžasnější seznam mého života.', source: 'Hříšný tanec' },
+  { text: 'Pojď sem a odškrtni to se mnou — nikdo tě nebude soudit za rytmus.', source: 'Hříšný tanec' },
+  // Deník Bridget Jonesové
+  { text: 'Milý deníčku, dnes jsem si dala předsevzetí přestat s cigaretami, alkoholem a odkládáním úkolů.', source: 'Deník Bridget Jonesové' },
+  { text: 'Mám ráda svůj seznam přesně takový, jaký je.', source: 'Deník Bridget Jonesové' },
+  { text: 'Nejsi žádné ošklivé káčátko, jenom máš rozepsaný seznam.', source: 'Deník Bridget Jonesové' },
+  { text: 'Rozcuchaný diář, tři nesplněné úkoly a kila navíc — klasické pondělí.', source: 'Deník Bridget Jonesové' },
+  // Pravá blondýnka
+  { text: 'Co, jako, je snad těžké odškrtnout úkol?', source: 'Pravá blondýnka' },
+  { text: 'Jsem blondýna, ale rozhodně nejsem hloupá — na rozdíl od odloženého úkolu.', source: 'Pravá blondýnka' },
+  { text: 'Elle Woods by ten úkol zvládla s culíkem v jedné ruce a diářem ve druhé.', source: 'Pravá blondýnka' },
+  // podobné romantické a kultovní kousky
+  { text: 'Odškrtnuto. To je vše.', source: 'Ďábel nosí Pradu' },
+  { text: 'Velká chyba. VELKÁ. Obrovská. (tak akorát pro odložený úkol)', source: 'Pretty Woman' },
+  { text: 'Jsem jen holka, co stojí před seznamem a prosí ho, aby se sám odškrtl.', source: 'Notting Hill' },
+  { text: 'Úkoly jsou všude kolem nás.', source: 'Láska nebeská' },
+  { text: 'Úkoly, úkoly, úkoly — vždycky vtipné, vždycky komické.', source: 'Mamma Mia!' },
+  { text: 'Zítra bude přesně stejný den — pokud dnes něco neodškrtneš.', source: 'Na Hromnice' },
+  { text: 'Miluju svoje boty skoro tak jako splněný seznam.', source: 'Sex ve městě' },
   { text: 'Nikdy tě nepustím. — úkol, který s sebou táhneš čtvrtý den', source: 'Titanic' },
-  { text: 'Život si vždycky najde cestu. Odložené úkoly taky — zpátky na dnešek.', source: 'Jurský park' },
-  { text: 'Nastěnko, hotovo? — Hotovo, dědečku.', source: 'Mrazík' },
-  { text: 'Adéla ještě nevečeřela. Taky si to napsala na „někdy jindy".', source: 'Adéla ještě nevečeřela' },
-  { text: 'Whisky, to je moje gusto. Ale až po posledním úkolu.', source: 'Limonádový Joe' },
-  { text: 'Nejde o to, jak tvrdě škrtáš. Jde o to, kolik ran ti seznam dá — a ty jdeš dál.', source: 'Rocky' },
-  { text: 'Jmenuju se Seznam. Úkolový Seznam. Protřepat, neodkládat.', source: 'James Bond' },
-  { text: 'Sůl nad zlato. Spánek nad úkoly.', source: 'Sůl nad zlato' },
-  { text: 'Tři oříšky pro dnešek: jeden úkol ráno, jeden po obědě a jeden si schovej na zítra.', source: 'Tři oříšky pro Popelku' },
-  { text: 'Světlo se najde i v nejtemnějším seznamu. Stačí odškrtnout první úkol.', source: 'Harry Potter' },
-  { text: 'Houstone, máme problém. Jmenuje se „někdy jindy".', source: 'Apollo 13' },
-  { text: 'Co odškrtneš dnes, o půlnoci se slavně vygumuje. Stihni se pokochat.', source: 'Gladiátor' },
-  { text: 'Hasta la vista, úkole.', source: 'Terminátor 2' },
-  { text: 'E. T. volat domů. Ty volat mamince — klidně si to napiš jako úkol.', source: 'E. T. Mimozemšťan' },
-  { text: 'S tebou mě baví svět. I ten odškrtnutý.', source: 'S tebou mě baví svět' },
 ];
 
 /** Praštěné, ale pravdivé zajímavosti s dovětkem k deníku. */
