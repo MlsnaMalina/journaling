@@ -91,7 +91,7 @@ body {
 
 .doodle-tape-b {
   top: 26px;
-  right: 20%;
+  left: calc(50% - 35px);
 }
 
 .doodle-tool {
