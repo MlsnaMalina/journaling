@@ -1,9 +1,11 @@
 import type { AppData, Task } from './types';
 import { diffDays } from './dates';
+import { demoData, IS_DEMO } from './demo';
 
 const KEY = 'bujo-todo-v1';
 
 export function loadData(fallbackDay: string): AppData {
+  if (IS_DEMO) return demoData(fallbackDay);
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) {
@@ -23,6 +25,7 @@ export function loadData(fallbackDay: string): AppData {
 }
 
 export function saveData(data: AppData): void {
+  if (IS_DEMO) return;
   localStorage.setItem(KEY, JSON.stringify(data));
 }
 

@@ -674,3 +674,23 @@ body {
     display: inline-flex;
   }
 }
+
+/* ------ ukázková verze (?demo) — nalepený lísteček ------ */
+
+.demo-badge {
+  position: fixed;
+  bottom: 14px;
+  left: 14px;
+  z-index: 30;
+  background: #fff9c9;
+  border: 1.6px solid #d9c979;
+  border-radius: 4px;
+  padding: 5px 13px 7px;
+  font-family: 'Caveat', cursive;
+  font-size: 17px;
+  font-weight: 600;
+  color: #6b6248;
+  transform: rotate(-3deg);
+  box-shadow: 0 2px 5px rgba(90, 80, 60, 0.18);
+  pointer-events: none;
+}

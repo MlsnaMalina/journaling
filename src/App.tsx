@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { AppData, Bucket, Category, Task } from './types';
 import { todayKey } from './dates';
 import { loadData, rollover, saveData } from './store';
+import { IS_DEMO } from './demo';
 import { Page } from './components/Page';
 import { DeskDoodles } from './components/Desk';
 import { ScribblePad } from './components/ScribblePad';
@@ -93,6 +94,7 @@ export default function App() {
 
   return (
     <div className="desk">
+      {IS_DEMO && <div className="demo-badge" role="note">ukázková verze · data jsou smyšlená</div>}
       <nav className="tabs" aria-label="přepínání stránek">
         <button className={mobilePage === 'today' ? 'on' : ''} onClick={() => setMobilePage('today')}>
           dnes
