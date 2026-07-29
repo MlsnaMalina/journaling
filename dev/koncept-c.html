@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Koncept C · Razítko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Patrick+Hand&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#ffffff; font-family:'Patrick Hand',cursive; color:#2a2a2a; padding:22px 14px 60px; }
+  .wrap { max-width:1000px; margin:0 auto; }
+  h1 { font-family:'Dancing Script',cursive; font-size:34px; margin:0 0 2px; color:#1c1c1c; font-weight:600; }
+  .sub { color:#8a8478; font-size:15px; margin:0 0 26px; }
+  h2 { font-family:'Caveat',cursive; font-size:23px; font-weight:600; color:#5f5a4e; margin:34px 0 10px;
+       border-bottom:1.4px dashed #d9d4c9; padding-bottom:5px; }
+  .note { font-size:14px; color:#8a8478; margin:-4px 0 14px; }
+
+  .book { display:flex; max-width:900px; margin:0 auto; background:#fdfdfb; border:1px solid #d9d4c9;
+          border-radius:10px; box-shadow:0 2px 14px rgba(90,80,60,.08); position:relative; }
+  .page { flex:1; min-width:0; position:relative; padding:20px 22px 84px;
+          background-image:radial-gradient(#e9e4d7 1px, transparent 1.2px); background-size:16px 16px; min-height:340px; }
+  .page.l { border-right:1px solid #e6e1d5; border-radius:10px 0 0 10px; }
+  .page.r { border-left:1px solid #efeadd; border-radius:0 10px 10px 0; }
+  .tape { display:inline-block; background:#1c1c1c; color:#fdfdfb; font-size:13px; letter-spacing:4px;
+          padding:3px 13px 4px; border-radius:3px; transform:rotate(-1deg); }
+  .date { font-family:'Caveat',cursive; font-size:25px; font-weight:600; margin:7px 0 8px; }
+  .cat { font-family:'Caveat',cursive; font-size:18px; color:#8a8478; margin:12px 0 4px; }
+  .cat b { color:#2a2a2a; font-weight:600; }
+  .row { display:flex; align-items:center; gap:9px; margin:5px 0; font-size:16px; }
+  .bx { width:15px; height:15px; border:1.6px solid #b0aa9c; border-radius:2px; flex:none; }
+  .bx.on { border-color:#8a8478; position:relative; }
+  .bx.on::after { content:''; position:absolute; left:2px; top:4px; width:9px; height:5px;
+                  border-left:1.8px solid #8a8478; border-bottom:1.8px solid #8a8478; transform:rotate(-45deg); }
+  .done { color:#a8a294; text-decoration:line-through; }
+  .hlY { background:#fbe3a3; box-shadow:0 0 0 2px #fbe3a3; }
+
+  .strip { position:absolute; left:0; right:0; bottom:-20px; height:128px; pointer-events:none; }
+  .sit { position:absolute; bottom:0; }
+
+  .grid { display:flex; flex-wrap:wrap; gap:4px; align-items:flex-end; }
+  .cell { text-align:center; }
+  .cell .lab { font-family:'Caveat',cursive; font-size:16px; color:#5f5a4e; margin-top:-2px; }
+  .cell .num { font-size:12px; color:#b0aa9c; }
+  .swatches { display:flex; gap:8px; align-items:center; margin:6px 0 0; }
+  .sw { width:26px; height:26px; border-radius:3px; border:1px solid rgba(0,0,0,.08); }
+  .capt { font-size:14px; color:#8a8478; max-width:660px; }
+  .phone { width:375px; max-width:100%; border:1px solid #d9d4c9; border-radius:12px; padding:10px; }
+  .hrahra { display:flex; align-items:center; gap:8px; font-family:'Caveat',cursive; font-size:20px; color:#5f5a4e; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Koncept C · Razítko</h1>
+  <p class="sub">Mazlíček je otisk razítka. Jedna barva, nerovné okraje, bílé výseky. Každý splněný úkol otiskne o kus větší.</p>
+
+  <h2>V sešitu</h2>
+  <p class="note">Pruh vespod je razítková kartička nalepená pod sešitem. Vlevo dnešní otisk, vpravo kolečka za poslední dny.</p>
+  <div class="book">
+    <div class="page l">
+      <span class="tape">S T Ř E D A</span>
+      <div class="date">29. července 2026</div>
+      <div class="cat"><b>Práce</b> · · · · · · · · · · · · · ·</div>
+      <div class="row"><span class="bx on"></span><span class="done">Poslat nabídku</span></div>
+      <div class="row"><span class="bx"></span><span class="hlY">Podklady na poradu</span></div>
+      <div class="cat"><b>Osobní</b> · · · · · · · · · · · · ·</div>
+      <div class="row"><span class="bx on"></span><span class="done">Zavolat mámě</span></div>
+      <div class="strip" id="stripL"></div>
+    </div>
+    <div class="page r">
+      <span class="tape">n ě k d y &nbsp; j i n d y</span>
+      <div class="cat"><b>Osobní</b> · · · · · · · · · · · · ·</div>
+      <div class="row"><span class="bx"></span><span>Vyfotit album</span></div>
+      <div class="row"><span class="bx"></span><span>Objednat se k zubaři</span></div>
+      <div class="strip" id="stripR"></div>
+    </div>
+  </div>
+
+  <h2>Zapnutí hry</h2>
+  <div class="hrahra"><span class="bx on" style="width:18px;height:18px;"></span> Hra</div>
+  <p class="capt">Stejné čtverečko jako u úkolů, popisek krasopisem. Po zaškrtnutí se zeptá kočka, nebo pes.</p>
+
+  <h2>Jak roste během dne — pes</h2>
+  <p class="note">Otisk se s každou fází pořádně zvětší a přibude bílý výsek: náprsenka, obojek.</p>
+  <div class="grid" id="dogRow"></div>
+
+  <h2>Jak roste během dne — kočka</h2>
+  <div class="grid" id="catRow"></div>
+
+  <h2>Tři nálady</h2>
+  <p class="note">Nálada mění celou siluetu — ospalý mazlíček je stočené klubíčko. Beze slov.</p>
+  <div class="grid" id="moodRow"></div>
+
+  <h2>Na mobilu (375 px)</h2>
+  <div class="phone">
+    <div style="background:#fdfdfb;border:1px solid #d9d4c9;border-radius:10px;padding:14px 14px 80px;position:relative;background-image:radial-gradient(#e9e4d7 1px,transparent 1.2px);background-size:16px 16px;">
+      <span class="tape">S T Ř E D A</span>
+      <div class="date">29. července 2026</div>
+      <div class="row"><span class="bx on"></span><span class="done">Poslat nabídku</span></div>
+      <div class="row"><span class="bx"></span><span class="hlY">Podklady na poradu</span></div>
+      <div class="row"><span class="bx"></span><span>Zavolat mámě</span></div>
+      <div class="strip" id="stripM" style="bottom:-14px;height:110px;"></div>
+    </div>
+  </div>
+
+  <h2>Paleta a inkoust</h2>
+  <div class="swatches">
+    <div class="sw" style="background:#c96f4a"></div>
+    <div class="sw" style="background:#c96f8a"></div>
+    <div class="sw" style="background:#ffffff;border:1px solid #d9d4c9"></div>
+    <div class="sw" style="background:#d9d4c9"></div>
+  </div>
+  <p class="capt">Pes terakota #c96f4a — stejný inkoust jako stávající razítko <i>hotovo!</i> — kočka malinová #c96f8a.
+  Jedna barva, bílé výseky místo linek, roztřepený okraj a lehce nakřivo otisknuté, jako by to razítko držela ruka.</p>
+
+</div>
+
+<script src="/dev/pets-c.js"></script>
+<script>
+function cell(html, lab, num) {
+  return '<div class="cell">' + html + '<div class="lab">' + lab + '</div>' + (num ? '<div class="num">' + num + '</div>' : '') + '</div>';
+}
+var fazeD = ['štěňátko', 'neposeda', 'rošťák', 'dorostenec', 'dospělý pes'];
+var fazeC = ['koťátko', 'neposeda', 'rošťák', 'dorostenec', 'dospělá kočka'];
+var pct = ['0 %', 'do 34 %', '35–64 %', '65–99 %', '100 %'];
+var dr = '', cr = '';
+for (var i = 0; i < 5; i++) {
+  var t = i / 4;
+  dr += cell(petSvgC('pes', t, i === 4 ? 'hop' : 'ok', { w: 172, h: 142 }), fazeD[i], pct[i]);
+  cr += cell(petSvgC('kocka', t, i === 4 ? 'hop' : 'ok', { w: 172, h: 142 }), fazeC[i], pct[i]);
+}
+document.getElementById('dogRow').innerHTML = dr;
+document.getElementById('catRow').innerHTML = cr;
+
+document.getElementById('moodRow').innerHTML =
+  cell(petSvgC('pes', .7, 'hop'), 'rozjívený', 'hodně hraní') +
+  cell(petSvgC('pes', .7, 'ok'), 'spokojený', 'běžný stav') +
+  cell(petSvgC('pes', .7, 'sleep'), 'ospalý', 'dlouho nic') +
+  cell(petSvgC('kocka', .7, 'hop'), 'rozjívená', '') +
+  cell(petSvgC('kocka', .7, 'ok'), 'spokojená', '') +
+  cell(petSvgC('kocka', .7, 'sleep'), 'ospalá', '');
+
+document.getElementById('stripL').innerHTML =
+  '<div class="sit" style="left:14px;bottom:-2px;">' + petSvgC('pes', .75, 'ok', { w: 150, h: 124 }) + '</div>' +
+  '<div class="sit" style="left:154px;bottom:14px;">' + bowlSvgC(true) + '</div>';
+document.getElementById('stripR').innerHTML =
+  '<div class="sit" style="left:16px;bottom:10px;">' + cardSvgC([1, .25, .75, 1, .5, .75]) + '</div>';
+document.getElementById('stripM').innerHTML =
+  '<div class="sit" style="left:-4px;bottom:-4px;">' + petSvgC('pes', .75, 'ok', { w: 136, h: 112 }) + '</div>' +
+  '<div class="sit" style="left:118px;bottom:18px;">' + bowlSvgC(true) + '</div>' +
+  '<div class="sit" style="left:170px;bottom:6px;transform:scale(.58);transform-origin:left bottom;">' + cardSvgC([1, .75, 1, .5]) + '</div>';
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kontrola výpočtů mazlíčka</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet" />
+<style>
+  body { margin:0; background:#fff; font-family:'Patrick Hand',cursive; color:#2a2a2a; padding:24px 18px 60px; }
+  h1 { font-family:'Caveat',cursive; font-size:30px; font-weight:600; margin:0 0 2px; }
+  .sum { font-family:'Caveat',cursive; font-size:24px; font-weight:600; margin:8px 0 16px; }
+  .sum.ok { color:#4c7a5b; } .sum.bad { color:#c0503c; }
+  table { border-collapse:collapse; font-size:15px; }
+  td { padding:3px 12px 3px 0; border-bottom:1px dotted #e6e1d5; vertical-align:top; }
+  td:first-child { width:20px; font-size:16px; }
+  td:nth-child(3), td:nth-child(4) { font-family:ui-monospace,monospace; font-size:12.5px; color:#8a8478; }
+  tr.p td:first-child { color:#4c7a5b; }
+  tr.f td { color:#c0503c; }
+  tr.f td:nth-child(4)::before { content:'čekáno '; }
+</style>
+</head>
+<body>
+  <h1>Kontrola výpočtů mazlíčka</h1>
+  <div id="out"></div>
+  <script type="module" src="/dev/petCheck.ts"></script>
+</body>
+</html>
