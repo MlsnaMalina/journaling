@@ -30,7 +30,7 @@ function Star({ active }: { active: boolean }) {
   );
 }
 
-function Check() {
+export function Check() {
   return (
     <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">
       <path d="M2 6.5 L5 9.5 L10 2.5" stroke="#7a8f6d" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />

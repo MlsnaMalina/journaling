@@ -7,6 +7,10 @@ import { Page } from './components/Page';
 import { DeskDoodles } from './components/Desk';
 import { ScribblePad } from './components/ScribblePad';
 import { ScratchCard } from './components/ScratchCard';
+import { GameToggle } from './components/GameToggle';
+import { PetStrip } from './components/PetStrip';
+import type { PetData, PetKind } from './pet';
+import { loadPet, rolloverPet, savePet } from './pet';
 import type { TaskActions } from './components/TaskRow';
 
 function newId(): string {
@@ -17,6 +21,7 @@ export default function App() {
   const [today, setToday] = useState(() => todayKey());
   const [data, setData] = useState<AppData>(() => rollover(loadData(todayKey()), todayKey()));
   const [mobilePage, setMobilePage] = useState<Bucket>('today');
+  const [pet, setPet] = useState<PetData>(() => loadPet(todayKey(), Date.now()));
   const dataRef = useRef(data);
   dataRef.current = data;
 
@@ -25,15 +30,23 @@ export default function App() {
   }, [data]);
 
   useEffect(() => {
+    savePet(pet);
+  }, [pet]);
+
+  useEffect(() => {
     const timer = window.setInterval(() => {
       const t = todayKey();
       if (t !== dataRef.current.lastOpen) {
         setToday(t);
         setData((d) => rollover(d, t));
+        setPet((p) => rolloverPet(p, t, Date.now()));
       }
     }, 30_000);
     return () => window.clearInterval(timer);
   }, []);
+
+  const toggleGame = () => setPet((p) => ({ ...p, on: !p.on }));
+  const chooseKind = (kind: PetKind) => setPet((p) => ({ ...p, kind }));
 
   const patchTask = (id: string, patch: (t: Task) => Task) => {
     setData((d) => ({ ...d, tasks: d.tasks.map((t) => (t.id === id ? patch(t) : t)) }));
@@ -103,7 +116,8 @@ export default function App() {
           někdy jindy
         </button>
       </nav>
-      <div className="desk-inner">
+      <div className={`desk-inner${pet.on ? ' with-pet' : ''}`}>
+        <GameToggle on={pet.on} toggle={toggleGame} />
         <ScribblePad today={today} />
         <DeskDoodles today={today} />
         <div className="book">
@@ -124,6 +138,7 @@ export default function App() {
           hiddenOnMobile={mobilePage !== 'someday'}
         />
         <ScratchCard today={today} />
+        <PetStrip pet={pet} chooseKind={chooseKind} />
         </div>
       </div>
     </div>

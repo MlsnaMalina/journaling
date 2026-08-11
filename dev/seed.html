@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<title>Naplnit deník testovacími daty</title>
+</head>
+<body>
+<p style="font-family:sans-serif">Plním localStorage a přesměrovávám…</p>
+<script>
+/* Dev nástroj: nastaví deníku a mazlíčkovi stav a skočí na appku.
+   Např. /dev/seed.html?on=1&kind=pes&peak=0.6&mood=78&marks=2@9:40,4@11:15
+   Do buildu se to nedostane — dev/ se do dist nekopíruje. */
+var q = new URLSearchParams(location.search);
+
+function dayKey() {
+  var n = new Date();
+  return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
+}
+var DAY = dayKey();
+
+function task(text, bucket, category, extra) {
+  var t = {
+    id: crypto.randomUUID(), text: text, bucket: bucket, category: category,
+    priority: false, done: false, completedAt: null, migrations: 0,
+    nudgeDismissed: null, subtasks: [], createdAt: Date.now() + Math.random(),
+  };
+  return Object.assign(t, extra || {});
+}
+
+if (q.get('tasks') !== '0') {
+  localStorage.setItem('bujo-todo-v1', JSON.stringify({
+    lastOpen: DAY,
+    tasks: [
+      task('Poslat nabídku novému klientovi', 'today', 'work', { priority: true }),
+      task('Připravit podklady na poradu', 'today', 'work', {
+        subtasks: [
+          { id: 'a', text: 'vytisknout tabulku', done: true },
+          { id: 'b', text: 'doplnit čísla za červen', done: false },
+        ],
+      }),
+      task('Odpovědět na e-maily', 'today', 'work', { done: true, completedAt: DAY }),
+      task('Objednat dort na sobotní oslavu', 'today', 'personal', { priority: true }),
+      task('Vyzvednout balík na poště', 'today', 'personal'),
+      task('Zalít kytky', 'today', 'personal', { done: true, completedAt: DAY }),
+      task('Zaktualizovat ceník na webu', 'someday', 'work'),
+      task('Dočíst rozečtenou knížku', 'someday', 'personal'),
+    ],
+  }));
+}
+
+var marks = (q.get('marks') || '').split(',').filter(Boolean).map(function (m) {
+  var p = m.split('@');
+  return { stage: Number(p[0]), at: p[1] };
+});
+
+localStorage.setItem('bujo-pet-v1', JSON.stringify({
+  on: q.get('on') === '1',
+  kind: q.get('kind') || null,
+  today: {
+    day: DAY,
+    peak: Number(q.get('peak') || 0),
+    mood: Number(q.get('mood') || 60),
+    lastActivity: Date.now(),
+    marks: marks,
+    plays: { scratch: 0, scribble: 0, stroke: 0, added: 0 },
+  },
+}));
+
+if (q.get('scratch') === '1') localStorage.setItem('bujo-scratch-v1', JSON.stringify({ day: DAY, revealed: true }));
+location.replace('/');
+</script>
+</body>
+</html>
