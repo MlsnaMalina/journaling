@@ -637,12 +637,36 @@ body {
   position: absolute;
   left: 10%;
   bottom: -18px;
+  /* zmenšení na mobilu jde přes proměnnou, aby ho nepřebilo poskakování */
+  --pet-scale: 1;
+  transform: scale(var(--pet-scale));
+  transform-origin: left bottom;
 }
 
 .pet-bowl {
   position: absolute;
   left: 28%;
   bottom: 12px;
+}
+
+/* radost ze splněného úkolu — mazlíček poskakuje */
+.pet-sit.cheer {
+  animation: pet-hop 0.5s ease-in-out infinite;
+}
+
+@keyframes pet-hop {
+  0%, 100% {
+    transform: scale(var(--pet-scale)) translateY(0);
+  }
+  40% {
+    transform: scale(var(--pet-scale)) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-sit.cheer {
+    animation: none;
+  }
 }
 
 /* výběr zvířete — lísteček uprostřed pruhu */
@@ -767,8 +791,7 @@ body {
   }
 
   .pet-sit {
-    transform: scale(0.86);
-    transform-origin: left bottom;
+    --pet-scale: 0.86;
   }
 
   .pet-bowl {
@@ -811,7 +834,7 @@ body {
 
   .pet-sit {
     left: 16%;
-    transform: scale(0.82);
+    --pet-scale: 0.82;
   }
 
   .pet-bowl {

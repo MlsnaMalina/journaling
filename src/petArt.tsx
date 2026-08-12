@@ -36,7 +36,7 @@ function shape(bits: Bits, d: string, w = 1.9): void {
 /* ---------- pes ---------- */
 
 /** Trup: počátek je střed sedu na zemi, přední strana vlevo. */
-function dogBody(t: number, mood: PetMood): Bits {
+function dogBody(t: number, mood: PetMood, cheer = false): Bits {
   const bits: Bits = [];
   const legTop = -18 - 10 * t;
   const tl = 14 + 12 * t;
@@ -56,6 +56,11 @@ function dogBody(t: number, mood: PetMood): Bits {
   pen(bits, td, 2.1);
   if (t >= 1) {
     pen(bits, `M${te[0] - 1} ${te[1] + 3} l6 -3 M${te[0] - 3} ${te[1] + 9} l7 -2 M${te[0] - 5} ${te[1] + 15} l6 -2`, 1.2, 0.6);
+  }
+  /* vrtí ocasem: naznačené oblouky, kudy ocas právě prošel */
+  if (cheer) {
+    pen(bits, `M${te[0] - 11} ${te[1] - 3} q7 -5 13 1`, 1.3, 0.5);
+    pen(bits, `M${te[0] + 4} ${te[1] + 6} q7 -5 12 2`, 1.3, 0.4);
   }
 
   shape(bits, 'M-23 0 C-30 -12 -28 -30 -19 -40 C-12 -47 2 -47 9 -39 C18 -29 28 -18 28 -7 C28 -1 24 1 18 1 L-18 1 Z');
@@ -144,7 +149,7 @@ function catBody(t: number, mood: PetMood): Bits {
   return bits;
 }
 
-function catHead(t: number, mood: PetMood): Bits {
+function catHead(t: number, mood: PetMood, cheer = false): Bits {
   const bits: Bits = [];
   const up = mood === 'hop';
   const sleep = mood === 'sleep';
@@ -159,6 +164,12 @@ function catHead(t: number, mood: PetMood): Bits {
 
   bits.push(<path key="cumak" d="M-3 4 h6 l-3 3 Z" fill="#c96f8a" />);
   pen(bits, 'M0 7 q-3.5 3.5 -7 1.5 M0 7 q3.5 3.5 7 1.5', 1.4);
+  /* olízne se: jazýček vyplázlý přes čumáček */
+  if (cheer) {
+    bits.push(
+      <path key="jazyk" d="M-1 8 q-1 6 3 7 q4 -2 2 -7 Z" fill="#e8a0ae" stroke="#c96f8a" strokeWidth={1.1} strokeLinejoin="round" />,
+    );
+  }
 
   const fw = 11 + 6 * t;
   pen(bits, `M-8 4 l${-fw} -2.5 M-8 7 l${-fw} 2.5`, 1.05, 0.65);
@@ -193,9 +204,11 @@ interface PetProps {
   width?: number;
   /** zvýrazňovačový flíček pod packami */
   ground?: boolean;
+  /** právě má radost ze splněného úkolu */
+  cheer?: boolean;
 }
 
-export function Pet({ kind, stage, mood, width = VIEW_W, ground = true }: PetProps) {
+export function Pet({ kind, stage, mood, width = VIEW_W, ground = true, cheer = false }: PetProps) {
   const dog = kind === 'pes';
   const t = (stage - 1) / 4;
   /* tělo roste víc než hlava, takže mládě má velkou hlavu */
@@ -228,10 +241,10 @@ export function Pet({ kind, stage, mood, width = VIEW_W, ground = true }: PetPro
         />
       )}
       <g transform={`translate(${cx} ${gy}) scale(${sb})`}>
-        {dog ? dogBody(t, mood) : catBody(t, mood)}
+        {dog ? dogBody(t, mood, cheer) : catBody(t, mood)}
       </g>
       <g transform={`translate(${hx} ${hy}) rotate(${tilt}) scale(${sh})`}>
-        {dog ? dogHead(t, mood) : catHead(t, mood)}
+        {dog ? dogHead(t, mood) : catHead(t, mood, cheer)}
       </g>
       {extra}
       {mood === 'sleep' && (
@@ -251,9 +264,11 @@ export function Bowl({ treats }: { treats: number }) {
   pen(bits, d, 1.8);
   return (
     <svg viewBox="0 0 50 36" width={50} height={36} aria-hidden="true">
-      {treats > 0 && <circle cx={20} cy={16} r={3.4} fill="#f3cdd6" stroke="#c96f8a" strokeWidth={1.1} />}
-      {treats > 1 && <circle cx={28} cy={15} r={2.8} fill="#fbe3a3" stroke="#c9a86a" strokeWidth={1.1} />}
       {bits}
+      {/* porce se kreslí až přes misku, aby v ní byly opravdu vidět */}
+      {treats > 0 && <circle cx={18} cy={22} r={3.6} fill="#f3cdd6" stroke="#c96f8a" strokeWidth={1.2} />}
+      {treats > 1 && <circle cx={26} cy={21} r={3.2} fill="#fbe3a3" stroke="#c9a86a" strokeWidth={1.2} />}
+      {treats > 2 && <circle cx={33} cy={23} r={2.9} fill="#cfe0d4" stroke="#6f9a7c" strokeWidth={1.2} />}
     </svg>
   );
 }

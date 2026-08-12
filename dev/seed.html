@@ -63,6 +63,8 @@ localStorage.setItem('bujo-pet-v1', JSON.stringify({
     lastActivity: Date.now(),
     marks: marks,
     plays: { scratch: 0, scribble: 0, stroke: 0, added: 0 },
+    treats: Number(q.get('treats') || 0),
+    cheerUntil: q.get('cheer') === '1' ? Date.now() + 600000 : 0,
   },
 }));
 

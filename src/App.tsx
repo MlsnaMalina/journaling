@@ -9,12 +9,18 @@ import { ScribblePad } from './components/ScribblePad';
 import { ScratchCard } from './components/ScratchCard';
 import { GameToggle } from './components/GameToggle';
 import { PetStrip } from './components/PetStrip';
-import type { PetData, PetKind } from './pet';
-import { loadPet, rolloverPet, savePet } from './pet';
+import type { PetData, PetEvent, PetKind } from './pet';
+import { applyEvent, loadPet, rolloverPet, savePet, syncGrowth } from './pet';
 import type { TaskActions } from './components/TaskRow';
 
 function newId(): string {
   return crypto.randomUUID();
+}
+
+/** Je všechno na dnešní stránce odškrtnuté? (razítko hotovo!) */
+function allTodayDone(tasks: Task[]): boolean {
+  const today = tasks.filter((t) => t.bucket === 'today');
+  return today.length > 0 && today.every((t) => t.done);
 }
 
 export default function App() {
@@ -33,6 +39,12 @@ export default function App() {
     savePet(pet);
   }, [pet]);
 
+  /* po otevření deníku dorovnáme růst na dnešní stav — třeba u úkolů,
+     které se přes noc převalily rozdělané */
+  useEffect(() => {
+    setPet((p) => syncGrowth(p, dataRef.current.tasks, Date.now()));
+  }, []);
+
   useEffect(() => {
     const timer = window.setInterval(() => {
       const t = todayKey();
@@ -45,11 +57,37 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, []);
 
-  const toggleGame = () => setPet((p) => ({ ...p, on: !p.on }));
-  const chooseKind = (kind: PetKind) => setPet((p) => ({ ...p, kind }));
+  const toggleGame = () =>
+    setPet((p) => {
+      const on = !p.on;
+      /* při zapnutí dorovnáme růst na dnešní stav, ať mazlíček nezačíná od nuly */
+      return on ? syncGrowth({ ...p, on }, dataRef.current.tasks, Date.now()) : { ...p, on };
+    });
+  const chooseKind = (kind: PetKind) =>
+    setPet((p) => syncGrowth({ ...p, kind }, dataRef.current.tasks, Date.now()));
+  const eat = () => setPet((p) => applyEvent(p, { type: 'eat' }, Date.now()));
 
-  const patchTask = (id: string, patch: (t: Task) => Task) => {
-    setData((d) => ({ ...d, tasks: d.tasks.map((t) => (t.id === id ? patch(t) : t)) }));
+  /**
+   * Každá změna úkolů projde tudy: deník se uloží a mazlíčkovi se hned
+   * přepočítá růst, spadne mu do misky porce a zaraduje se.
+   */
+  const mutate = (change: (d: AppData) => AppData, event?: PetEvent) => {
+    const before = dataRef.current;
+    const next = change(before);
+    dataRef.current = next;
+    setData(next);
+
+    const now = Date.now();
+    const stamped = allTodayDone(next.tasks) && !allTodayDone(before.tasks);
+    setPet((p) => {
+      let np = event ? applyEvent(p, event, now) : p;
+      if (stamped) np = applyEvent(np, { type: 'all-done' }, now);
+      return syncGrowth(np, next.tasks, now);
+    });
+  };
+
+  const patchTask = (id: string, patch: (t: Task) => Task, event?: PetEvent) => {
+    mutate((d) => ({ ...d, tasks: d.tasks.map((t) => (t.id === id ? patch(t) : t)) }), event);
   };
 
   const addTask = (bucket: Bucket, category: Category, text: string, priority: boolean) => {
@@ -66,26 +104,39 @@ export default function App() {
       subtasks: [],
       createdAt: Date.now(),
     };
-    setData((d) => ({ ...d, tasks: [...d.tasks, task] }));
+    mutate((d) => ({ ...d, tasks: [...d.tasks, task] }), { type: 'task-added' });
   };
 
   const actions: TaskActions = {
-    toggleTask: (id) =>
-      patchTask(id, (t) => {
-        const done = !t.done;
-        return {
-          ...t,
-          done,
-          completedAt: done ? todayKey() : null,
-          subtasks: t.subtasks.map((s) => ({ ...s, done })),
-        };
-      }),
-    toggleSubtask: (taskId, subId) =>
+    toggleTask: (id) => {
+      const was = dataRef.current.tasks.find((t) => t.id === id)?.done === true;
+      patchTask(
+        id,
+        (t) => {
+          const done = !t.done;
+          return {
+            ...t,
+            done,
+            completedAt: done ? todayKey() : null,
+            subtasks: t.subtasks.map((s) => ({ ...s, done })),
+          };
+        },
+        was ? undefined : { type: 'task-done' },
+      );
+    },
+    toggleSubtask: (taskId, subId) => {
+      const parent = dataRef.current.tasks.find((t) => t.id === taskId);
+      const was = parent?.done === true;
+      let becameDone = false;
       patchTask(taskId, (t) => {
         const subtasks = t.subtasks.map((s) => (s.id === subId ? { ...s, done: !s.done } : s));
         const done = subtasks.length > 0 && subtasks.every((s) => s.done);
+        becameDone = done && !was;
         return { ...t, subtasks, done, completedAt: done ? todayKey() : null };
-      }),
+      });
+      /* dokrmíme až když odškrtnutý podúkol dorazil celý úkol */
+      if (becameDone) setPet((p) => applyEvent(p, { type: 'task-done' }, Date.now()));
+    },
     addSubtask: (taskId, text) =>
       patchTask(taskId, (t) => ({
         ...t,
@@ -101,7 +152,7 @@ export default function App() {
         nudgeDismissed: null,
       })),
     togglePriority: (id) => patchTask(id, (t) => ({ ...t, priority: !t.priority })),
-    deleteTask: (id) => setData((d) => ({ ...d, tasks: d.tasks.filter((t) => t.id !== id) })),
+    deleteTask: (id) => mutate((d) => ({ ...d, tasks: d.tasks.filter((t) => t.id !== id) })),
     dismissNudge: (id) => patchTask(id, (t) => ({ ...t, nudgeDismissed: todayKey() })),
   };
 
@@ -138,7 +189,7 @@ export default function App() {
           hiddenOnMobile={mobilePage !== 'someday'}
         />
         <ScratchCard today={today} />
-        <PetStrip pet={pet} chooseKind={chooseKind} />
+        <PetStrip pet={pet} chooseKind={chooseKind} eat={eat} />
         </div>
       </div>
     </div>

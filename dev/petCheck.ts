@@ -1,7 +1,8 @@
 /* Dočasná kontrola výpočtů mazlíčka. Otevři /koncepty/kontrola.html. Nepatří do buildu. */
 import type { Task } from '../src/types';
 import {
-  applyEvent, currentMood, dayProgress, emptyPet, moodFor, rolloverPet, stageFor, syncGrowth,
+  applyEvent, currentMood, dayProgress, emptyPet, isCheering, loadPet, moodFor, rolloverPet,
+  stageFor, syncGrowth,
 } from '../src/pet';
 import type { PetData } from '../src/pet';
 
@@ -124,6 +125,44 @@ check('nálada 72 po losu → spokojený', 'ok', moodFor(poLosu.today, NOW, new 
 check('nálada 84 → rozjívený', 'hop', moodFor(hlazeni.today, NOW, new Date(2026, 6, 29, 14, 0)));
 check('po 6 h bez dění (36) → ospalý', 'sleep', moodFor(on().today, NOW + 6 * HOUR, new Date(2026, 6, 29, 16, 0)));
 check('po 22. hodině spí, i když je nálada dobrá', 'sleep', moodFor(hlazeni.today, NOW, new Date(2026, 6, 29, 22, 30)));
+
+/* --- miska a radost ze splněného úkolu --- */
+const poUkolu = applyEvent(on(), { type: 'task-done' }, NOW);
+check('splněný úkol → porce do misky', 1, poUkolu.today.treats);
+check('splněný úkol → radost 5 s', true, isCheering(poUkolu.today, NOW + 4000));
+check('po 5 s radost končí', false, isCheering(poUkolu.today, NOW + 6000));
+check('radost přebije i noc', 'hop', moodFor(poUkolu.today, NOW, new Date(2026, 6, 29, 23, 0)));
+
+let miska = on();
+for (let i = 0; i < 5; i++) miska = applyEvent(miska, { type: 'task-done' }, NOW);
+check('do misky se vejdou nejvýš 3 porce', 3, miska.today.treats);
+check('snědená porce ubere jednu', 2, applyEvent(miska, { type: 'eat' }, NOW).today.treats);
+
+let prazdna = on();
+prazdna = applyEvent(prazdna, { type: 'eat' }, NOW);
+check('z prázdné misky nejde ubírat', 0, prazdna.today.treats);
+
+const poZadani = applyEvent(on(), { type: 'task-added' }, NOW);
+check('zadaný úkol → pamlsek do misky', 1, poZadani.today.treats);
+let hodneZadani = on();
+for (let i = 0; i < 6; i++) hodneZadani = applyEvent(hodneZadani, { type: 'task-added' }, NOW);
+check('pamlsky za zadání drží strop misky', 3, hodneZadani.today.treats);
+
+const vseHotovo = applyEvent(on(), { type: 'all-done' }, NOW);
+check('razítko hotovo → radost 9 s', true, isCheering(vseHotovo.today, NOW + 8000));
+
+check('nový den → miska prázdná', 0, rolloverPet(miska, '2026-07-30', NOW + 20 * HOUR).today.treats);
+check('nový den → radost vynulovaná', 0, rolloverPet(poUkolu, '2026-07-30', NOW + 20 * HOUR).today.cheerUntil);
+
+/* --- stará uložená data nesmí smazat vybrané zvíře --- */
+const stara = { on: true, kind: 'kocka', today: { day: '2026-07-29', peak: 0.6, mood: 70, lastActivity: NOW, marks: [{ stage: 3, at: '9:40' }], plays: { scratch: 0, scribble: 0, stroke: 0, added: 0 } } };
+localStorage.setItem('bujo-pet-v1', JSON.stringify(stara));
+const nactene = loadPet('2026-07-29', NOW);
+check('data bez misky a radosti: zvíře zůstane', 'kocka', nactene.kind);
+check('data bez misky a radosti: hra zůstane zapnutá', true, nactene.on);
+check('data bez misky: miska se dopočítá na 0', 0, nactene.today.treats);
+check('data bez misky: růst zůstane (fáze 3)', 3, stageFor(nactene.today.peak));
+localStorage.removeItem('bujo-pet-v1');
 
 /* --- vypnutá hra nic nepočítá --- */
 const vyp = applyEvent(emptyPet('2026-07-29', NOW), { type: 'play', source: 'scratch' }, NOW);

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { PetData, PetKind } from '../pet';
-import { moodFor, stageFor } from '../pet';
+import { isCheering, moodFor, stageFor } from '../pet';
 import { Bowl, GrowthMarks, Pet } from '../petArt';
 
 interface PetStripProps {
   pet: PetData;
   chooseKind: (kind: PetKind) => void;
+  /** mazlíček spolkl porci z misky */
+  eat: () => void;
 }
 
 /** Nabídka po prvním zaškrtnutí: kočka, nebo pes? */
@@ -28,13 +30,30 @@ function PetSetup({ chooseKind }: { chooseKind: (kind: PetKind) => void }) {
 }
 
 /** Pruh pod sešitem: růstové čárky, mazlíček, miska. */
-export function PetStrip({ pet, chooseKind }: PetStripProps) {
+export function PetStrip({ pet, chooseKind, eat }: PetStripProps) {
   /* nálada se s hodinami bez dění propadá — stačí ji přepočítat po minutě */
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 60_000);
     return () => window.clearInterval(timer);
   }, []);
+
+  /* radost trvá jen několik sekund, po dojití je potřeba překreslit */
+  const cheerUntil = pet.today.cheerUntil;
+  useEffect(() => {
+    const left = cheerUntil - Date.now();
+    if (left <= 0) return;
+    const timer = window.setTimeout(() => setNow(Date.now()), left + 60);
+    return () => window.clearTimeout(timer);
+  }, [cheerUntil]);
+
+  /* miska se postupně vyprazdňuje — mazlíček jednu porci sní */
+  const treats = pet.today.treats;
+  useEffect(() => {
+    if (treats <= 0) return;
+    const timer = window.setTimeout(eat, 4_500);
+    return () => window.clearTimeout(timer);
+  }, [treats, eat]);
 
   if (!pet.on) return null;
   if (pet.kind === null) {
@@ -47,6 +66,7 @@ export function PetStrip({ pet, chooseKind }: PetStripProps) {
 
   const stage = stageFor(pet.today.peak);
   const mood = moodFor(pet.today, now);
+  const cheer = isCheering(pet.today, now);
 
   return (
     <div className="pet-strip">
@@ -55,11 +75,11 @@ export function PetStrip({ pet, chooseKind }: PetStripProps) {
           <GrowthMarks marks={pet.today.marks} />
         </div>
       )}
-      <div className="pet-sit">
-        <Pet kind={pet.kind} stage={stage} mood={mood} width={190} />
+      <div className={`pet-sit${cheer ? ' cheer' : ''}`}>
+        <Pet kind={pet.kind} stage={stage} mood={mood} width={190} cheer={cheer} />
       </div>
       <div className="pet-bowl">
-        <Bowl treats={0} />
+        <Bowl treats={treats} />
       </div>
     </div>
   );
