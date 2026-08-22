@@ -22,32 +22,32 @@ export function Page({ bucket, tasks, today, actions, addTask, hiddenOnMobile }:
   const pageTasks = tasks.filter((t) => t.bucket === bucket);
   const allDone = bucket === 'today' && pageTasks.length > 0 && pageTasks.every((t) => t.done);
 
-  const pies = CATEGORIES.map((c) => {
-    const list = pageTasks.filter((t) => t.category === c.key);
-    return (
-      <Pie
-        key={c.key}
-        category={c.key}
-        done={list.filter((t) => t.done).length}
-        total={list.length}
-        label={c.label}
-      />
-    );
-  });
+  /* Koláče jsou jen na „dnes". Na „někdy jindy" nedávají smysl —
+     úkol se nejdřív přesune na dnešek a teprve tam se odškrtává. */
+  const pies = () =>
+    CATEGORIES.map((c) => {
+      const list = pageTasks.filter((t) => t.category === c.key);
+      return (
+        <Pie
+          key={c.key}
+          category={c.key}
+          done={list.filter((t) => t.done).length}
+          total={list.length}
+          label={c.label}
+        />
+      );
+    });
 
   return (
     <div className={`page ${bucket}${hiddenOnMobile ? ' m-hidden' : ''}`}>
       {bucket === 'today' ? (
         <>
-          <div className="pies">{pies}</div>
+          <div className="pies">{pies()}</div>
           <div className="tape">{spaced(weekdayName(today))}</div>
           <div className="date">{formatCzechDate(today)}</div>
         </>
       ) : (
-        <>
-          <div className="tape tilt">{spaced('někdy')}&nbsp;&nbsp;{spaced('jindy')}</div>
-          <div className="pies inline">{pies}</div>
-        </>
+        <div className="tape tilt">{spaced('někdy')}&nbsp;&nbsp;{spaced('jindy')}</div>
       )}
 
       {CATEGORIES.map((c) => (

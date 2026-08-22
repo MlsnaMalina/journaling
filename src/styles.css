@@ -224,19 +224,6 @@ body {
   gap: 10px;
 }
 
-.pies.inline {
-  position: static;
-  display: flex;
-  width: max-content;
-  gap: 14px;
-  margin: 6px 0 8px 8px;
-}
-
-.pies.inline svg {
-  width: 36px;
-  height: 36px;
-}
-
 .pie {
   display: flex;
   flex-direction: column;
