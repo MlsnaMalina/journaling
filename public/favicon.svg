@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="otevřený deník">
+  <g transform="rotate(-2 16 16)">
+    <path d="M16 9.4 C12.2 6.4 7.4 5.8 3.4 6.8 L3.4 24.4 C7.4 23.4 12.2 24 16 27 Z" fill="#fdfdfb" stroke="#3a3a3a" stroke-width="2.1" stroke-linejoin="round"/>
+    <path d="M16 9.4 C19.8 6.4 24.6 5.8 28.6 6.8 L28.6 24.4 C24.6 23.4 19.8 24 16 27 Z" fill="#fdfdfb" stroke="#3a3a3a" stroke-width="2.1" stroke-linejoin="round"/>
+    <path d="M6.6 12.4 h6.2" stroke="#fbe3a3" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M6.6 17.6 h4.4" stroke="#e2ddcf" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M19.2 12.6 h6.2" stroke="#f3cdd6" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M19.2 17.8 h4.4" stroke="#e2ddcf" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+</svg>

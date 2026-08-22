@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Návrhy ikony deníku</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Patrick+Hand&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fff; font-family:'Patrick Hand',cursive; color:#2a2a2a; padding:26px 18px 70px; }
+  .wrap { max-width:1000px; margin:0 auto; }
+  h1 { font-family:'Dancing Script',cursive; font-size:34px; font-weight:600; margin:0 0 2px; }
+  .sub { color:#8a8478; font-size:15px; margin:0 0 28px; }
+  h2 { font-family:'Caveat',cursive; font-size:24px; font-weight:600; color:#5f5a4e; margin:34px 0 4px; }
+  .why { font-size:14.5px; color:#8a8478; margin:0 0 14px; max-width:660px; }
+  .row { display:flex; align-items:flex-end; gap:26px; flex-wrap:wrap; }
+  .lab { font-family:'Caveat',cursive; font-size:15px; color:#b0aa9c; text-align:center; margin-top:3px; }
+  .box { text-align:center; }
+  .rule { border:0; border-top:1.4px dashed #d9d4c9; margin:30px 0 0; }
+
+  /* faksimile lišty se záložkami */
+  .bar { display:flex; gap:4px; padding:7px 8px 0; border-radius:9px 9px 0 0; width:max-content; }
+  .bar.light { background:#dee1e6; }
+  .bar.dark { background:#202124; }
+  .tab { display:flex; align-items:center; gap:7px; padding:7px 13px; border-radius:8px 8px 0 0;
+         font-family:system-ui,sans-serif; font-size:12px; white-space:nowrap; }
+  .bar.light .tab { background:#fff; color:#3c4043; }
+  .bar.light .tab.off { background:#c9ccd1; color:#5f6368; }
+  .bar.dark .tab { background:#35363a; color:#e8eaed; }
+  .bar.dark .tab.off { background:#292a2d; color:#9aa0a6; }
+  .tab svg, .tab .dot { width:16px; height:16px; flex:none; }
+  .dot { border-radius:50%; background:#9aa0a6; }
+  .bars { display:flex; gap:20px; flex-wrap:wrap; margin-top:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Návrhy ikony deníku</h1>
+  <p class="sub">Tři různé, každá postavená z něčeho, co v deníku už je. Dole vždy v opravdové velikosti záložky, na světlém i tmavém pruhu.</p>
+
+  <div id="out"></div>
+</div>
+
+<script>
+/* ---------- tři návrhy, každý jako hotová SVG ikona 32x32 ---------- */
+
+function paperTile() {
+  return '<rect x="0" y="0" width="32" height="32" rx="7" fill="#fdfdfb"/>';
+}
+
+/* A — krasopisné „d" se zvýrazňovačem */
+function iconA() {
+  return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">'
+    + paperTile()
+    + '<rect x="3.2" y="19.8" width="25.6" height="7.6" rx="3.6" fill="#fbe3a3" transform="rotate(-3 16 23.6)"/>'
+    + '<g fill="none" stroke="#1c1c1c" stroke-width="3.9" stroke-linecap="round" stroke-linejoin="round">'
+    + '<path d="M20.4 13.4 C17.4 10.6 9.4 11.4 9.4 17.8 C9.4 23.8 17.2 24.6 20.4 21.8"/>'
+    + '<path d="M20.4 4.6 L20.4 20.4 C20.4 23.2 22.2 24.2 24.4 23.2"/>'
+    + '</g></svg>';
+}
+
+/* B — tužka z okrajových malůvek */
+function iconB() {
+  return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">'
+    + paperTile()
+    + '<g transform="rotate(-38 16 16)">'
+    + '<rect x="0.8" y="11.4" width="5" height="9.2" rx="1.4" fill="#e8a0ae" stroke="#c96f8a" stroke-width="1.7"/>'
+    + '<rect x="5" y="11.4" width="17.4" height="9.2" fill="#f7d178" stroke="#c9a86a" stroke-width="1.7"/>'
+    + '<path d="M22.4 11.4 L31 16 L22.4 20.6 Z" fill="#f0e2d2" stroke="#c9a86a" stroke-width="1.7" stroke-linejoin="round"/>'
+    + '<path d="M26.9 13.8 L31 16 L26.9 18.2 Z" fill="#2f2f2f"/>'
+    + '</g></svg>';
+}
+
+/* C — otevřený sešit se zvýrazněnými řádky */
+function iconC() {
+  return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">'
+    + '<g transform="rotate(-2 16 16)">'
+    + '<path d="M16 9.4 C12.2 6.4 7.4 5.8 3.4 6.8 L3.4 24.4 C7.4 23.4 12.2 24 16 27 Z" fill="#fdfdfb" stroke="#3a3a3a" stroke-width="2.1" stroke-linejoin="round"/>'
+    + '<path d="M16 9.4 C19.8 6.4 24.6 5.8 28.6 6.8 L28.6 24.4 C24.6 23.4 19.8 24 16 27 Z" fill="#fdfdfb" stroke="#3a3a3a" stroke-width="2.1" stroke-linejoin="round"/>'
+    + '<path d="M6.6 12.4 h6.2" stroke="#fbe3a3" stroke-width="3.2" stroke-linecap="round"/>'
+    + '<path d="M6.6 17.6 h4.4" stroke="#e2ddcf" stroke-width="2.2" stroke-linecap="round"/>'
+    + '<path d="M19.2 12.6 h6.2" stroke="#f3cdd6" stroke-width="3.2" stroke-linecap="round"/>'
+    + '<path d="M19.2 17.8 h4.4" stroke="#e2ddcf" stroke-width="2.2" stroke-linecap="round"/>'
+    + '</g></svg>';
+}
+
+var NAVRHY = [
+  { id: 'A', jmeno: 'Krasopisné d', svg: iconA(),
+    why: 'Ručně psané „d" jako deník, podtržené žlutým zvýrazňovačem — přesně tím, kterým se v deníku podbarvují prioritní úkoly. Není to piktogram, ale značka: nedá se splést s žádnou jinou appkou a jedno tlusté písmeno je v šestnácti pixelech čitelnější než jakákoli kresba.' },
+  { id: 'B', jmeno: 'Tužka', svg: iconB(),
+    why: 'Tužka z malůvek na stole, i s růžovou gumou, položená našikmo. Papírnictví místo to-do symbolu — neříká „seznam úkolů", ale „něco si sem píšu". Silná diagonála a tmavý hrot drží tvar i v nejmenší velikosti.' },
+  { id: 'C', jmeno: 'Otevřený sešit', svg: iconC(),
+    why: 'Rozevřená dvoustrana, jak vypadá celá appka — vlevo žlutá Práce, vpravo růžová Osobní. Jediný z trojice bez papírového podkladu, takže ikonu tvoří přímo obrys sešitu. Nejdoslovnější odpověď na otázku, co to je.' },
+];
+
+function velikost(svg, px) {
+  return '<div class="box"><div style="width:' + px + 'px;height:' + px + 'px">'
+    + svg.replace('<svg ', '<svg width="' + px + '" height="' + px + '" ')
+    + '</div><div class="lab">' + px + ' px</div></div>';
+}
+
+function lista(svg, tmava) {
+  var ikona = svg.replace('<svg ', '<svg width="16" height="16" ');
+  return '<div class="bar ' + (tmava ? 'dark' : 'light') + '">'
+    + '<div class="tab off"><span class="dot"></span>Gmail</div>'
+    + '<div class="tab">' + ikona + 'Můj deník · to do</div>'
+    + '<div class="tab off"><span class="dot"></span>Seznam.cz</div>'
+    + '</div>';
+}
+
+document.getElementById('out').innerHTML = NAVRHY.map(function (n) {
+  return '<hr class="rule">'
+    + '<h2>' + n.id + ' · ' + n.jmeno + '</h2>'
+    + '<p class="why">' + n.why + '</p>'
+    + '<div class="row">'
+    + velikost(n.svg, 128) + velikost(n.svg, 64) + velikost(n.svg, 32) + velikost(n.svg, 16)
+    + '</div>'
+    + '<div class="bars">' + lista(n.svg, false) + lista(n.svg, true) + '</div>';
+}).join('');
+</script>
+</body>
+</html>
